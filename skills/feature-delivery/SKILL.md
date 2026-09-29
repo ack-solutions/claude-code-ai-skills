@@ -13,6 +13,8 @@ Read applicable project instructions and the relevant acceptance criteria. Inspe
 
 Trace affected consumers before changing shared behaviour. For substantial work, make a short implementation plan covering dependencies, data impact and verification. Resolve material requirement conflicts; use disclosed reasonable defaults for reversible implementation details. Do not invoke every skill or demand a new specification for a small edit.
 
+If the full fix requires edits outside the authorized task, explain the impact and obtain expanded scope before those edits. Keep unresolved decisions and their owners in the project's existing records; only material dependencies block the affected work. Use its adopted task lifecycle rather than adding parallel statuses.
+
 ## Implement
 
 - Put business rules in their existing domain owner. Keep transport, persistence and presentation responsibilities clear without inventing layers solely to fit a pattern.

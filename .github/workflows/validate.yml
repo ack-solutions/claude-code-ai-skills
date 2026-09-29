@@ -34,5 +34,5 @@ jobs:
           package-manager-cache: false
       - name: Validate skill structure and references
         run: node validate.mjs
-      - name: Test safe installation
-        run: node --test test-install.mjs
+      - name: Test safe installation and complete archives
+        run: node --test test-install.mjs test-package.mjs

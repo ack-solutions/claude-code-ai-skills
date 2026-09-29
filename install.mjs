@@ -2,25 +2,27 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { kitRoot, listFiles, validateKit } from './validate.mjs';
+import { documentationPlan, kitRoot, listFiles, validateKit } from './validate.mjs';
 
 const usage = `Install the finalized Claude Code skills without overwriting files.
 
-  node install.mjs /path/to/project [--rules=nestjs-api,react-admin,database-contracts] [--starter] [--dry-run]
+  node install.mjs /path/to/project [--rules=nestjs-api,react-admin,database-contracts] [--starter] [--docs] [--dry-run]
   node install.mjs --global [--dry-run]
 
 Project: copies all skills into .claude/skills in an existing project directory.
 --rules: optionally copies only the named framework rule templates; adapt their paths to the project.
 --starter: creates CLAUDE.md only if absent or identical to this starter.
+--docs: copies project documents and the engineering playbook into docs; it does not approve their proposals.
 --global: copies skills into CLAUDE_CONFIG_DIR/skills or the default ~/.claude/skills.
 Existing identical files are skipped. Conflicts are reported before any copying.
 No dependencies are installed and no Claude permissions or account settings are changed.`;
 
 export function parseArgs(args) {
-  const options = { project: undefined, global: false, rules: [], starter: false, dryRun: false, help: false };
+  const options = { project: undefined, global: false, rules: [], starter: false, docs: false, dryRun: false, help: false };
   for (const arg of args) {
     if (arg === '--global') options.global = true;
     else if (arg === '--starter') options.starter = true;
+    else if (arg === '--docs') options.docs = true;
     else if (arg === '--dry-run') options.dryRun = true;
     else if (arg === '--help' || arg === '-h') options.help = true;
     else if (arg.startsWith('--rules=')) options.rules.push(...arg.slice(8).split(',').filter(Boolean));
@@ -29,8 +31,8 @@ export function parseArgs(args) {
     else options.project = arg;
   }
   if (options.help) return options;
-  if (options.global && (options.project || options.rules.length || options.starter)) {
-    throw new Error('--global installs skills only; it cannot be combined with a project, rules or starter.');
+  if (options.global && (options.project || options.rules.length || options.starter || options.docs)) {
+    throw new Error('--global installs skills only; it cannot be combined with a project, rules, starter or docs.');
   }
   if (!options.global && !options.project) throw new Error('Specify a project directory or --global.');
   return options;
@@ -57,6 +59,9 @@ function exists(target) {
 }
 
 export function install(options, root = kitRoot) {
+  if (options.global && (options.project || options.rules.length || options.starter || options.docs)) {
+    throw new Error('--global installs skills only; it cannot be combined with a project, rules, starter or docs.');
+  }
   const { manifest } = validateKit(root);
   for (const rule of options.rules) if (!manifest.rules.includes(rule)) throw new Error(`Unknown rule: ${rule}`);
   let project;
@@ -91,6 +96,11 @@ export function install(options, root = kitRoot) {
     planned.push({ source: path.join(root, 'templates', 'rules', `${name}.md`), target: path.join(config, 'rules', `${name}.md`) });
   }
   if (options.starter) planned.push({ source: path.join(root, 'templates', 'CLAUDE.md'), target: path.join(project, 'CLAUDE.md') });
+  if (options.docs) {
+    for (const item of documentationPlan(root, manifest)) {
+      planned.push({ source: path.join(root, item.source), target: path.join(project, item.target) });
+    }
+  }
 
   const pending = [];
   for (const item of planned) {
@@ -119,6 +129,7 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
       console.log(`${result.dryRun ? 'Preview' : 'Installed'}: ${result.target}`);
       console.log(`${result.dryRun ? result.pending + ' files would be copied' : result.copied + ' files copied'}; ${result.identical} identical files skipped.`);
       if (options.rules.length) console.log('Review the selected rules and adjust their paths for the target project.');
+      if (options.docs) console.log('Review docs/README.md and complete docs/PROJECT_CONTEXT.md. Templates are not approved project decisions; no CI, tracker or agent team was configured.');
       console.log('Start Claude Code in the project, or reload its skills in an existing session.');
     }
   } catch (error) {

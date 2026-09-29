@@ -1,6 +1,6 @@
 # Claude Code AI Skills
 
-**12 reusable AI skills for building and reviewing software with Claude Code.**
+**12 reusable AI skills, project starter documents and an engineering playbook for Claude Code.**
 
 [![Validate skills](https://github.com/ack-solutions/claude-code-ai-skills/actions/workflows/validate.yml/badge.svg)](https://github.com/ack-solutions/claude-code-ai-skills/actions/workflows/validate.yml)
 
@@ -8,9 +8,9 @@ Turn product ideas into scoped requirements, design clear user journeys, impleme
 
 The skills discover your project's actual stack and conventions. Optional **React, NestJS, Flutter and database rule templates** add file-specific engineering guidance without forcing a framework or architecture.
 
-By [ACK Solutions](https://github.com/ack-solutions) · Version 1.0.0 · [MIT license](LICENSE) · Dependency-free installer
+By [ACK Solutions](https://github.com/ack-solutions) · Version 1.1.0 · [MIT license](LICENSE) · Dependency-free installer
 
-[Quick start](#quick-start) · [Skill catalog](#skill-catalog) · [Framework rules](#optional-framework-rules) · [Validation](#validate-and-evaluate) · [Contributing](CONTRIBUTING.md)
+[Quick start](#quick-start) · [Project starter](#project-starter-documents) · [Skill catalog](#skill-catalog) · [Engineering playbook](playbook/README.md) · [Framework rules](#optional-framework-rules) · [Validation](#validate-and-evaluate) · [Contributing](CONTRIBUTING.md)
 
 ## Why use this skill pack?
 
@@ -42,6 +42,37 @@ Restart Claude Code in the target project, or run `/reload-skills` in an existin
 ```
 
 Commit the installed skill folders in your application repository to share them with teammates. The skills themselves are Markdown and require no Node runtime; only the installer and package tests use Node.
+
+## Project starter documents
+
+Use this one shared repository for reusable guidance; keep each application's code and adopted product decisions in its own application repository. You do not need a new skills repository for every project.
+
+For a new project, install the complete starter explicitly:
+
+```bash
+node install.mjs "/absolute/path/to/your-project" --starter --docs --dry-run
+node install.mjs "/absolute/path/to/your-project" --starter --docs
+```
+
+| Installed location | Responsibility |
+|---|---|
+| `CLAUDE.md` | Concise standing rules, scope and document routing |
+| `.claude/skills/` | The twelve focused task workflows |
+| `docs/README.md`, `docs/PROJECT_CONTEXT.md` | Document map, actual commands, owners and adopted conventions |
+| `docs/REQUIREMENTS.md` | Product-wide rules and cross-feature journeys |
+| `docs/DESIGN_SPEC.md` | Shared design foundations, supported states and measurable design acceptance |
+| `docs/ARCHITECTURE.md` | System overview, data ownership, interfaces and failure/recovery scenarios |
+| `docs/WORKFLOW.md`, `docs/TASKS.md` | Adopted workflow and one authoritative backlog or tracker index |
+| `docs/features/_TEMPLATE.md` | Feature behaviour, decisions, acceptance and rollout |
+| `docs/engineering/` | Playbook, task/ADR/API/handoff/release templates and pack manifest |
+
+Start Claude Code in the target project and ask:
+
+> Read CLAUDE.md, docs/README.md and docs/PROJECT_CONTEXT.md. Inspect the actual project and fill in verified commands and document locations. Use product-planning to propose the requirements for my idea, identifying decisions I need to make. Keep proposed choices distinct from approved requirements. Do not implement application code or deploy anything yet.
+
+`--docs` and `--starter` are independent. Installing documents does not replace root instructions, approve requirements, create agents or configure CI/trackers. The short instructions route to relevant documents on demand; the whole playbook is not automatically imported. Complete only the fields the current work needs.
+
+**Existing project or older ZIP?** Preserve your project-specific documents and follow [migration guidance](playbook/migration.md). Any conflicting selected file stops the entire install before copying. For manual comparison, install the starter into a separate empty directory, then merge intentionally. Omit `--starter` to keep an existing `CLAUDE.md`; omit `--docs` when only skills are wanted. Other selected conflicts still need resolution.
 
 ## Skill catalog
 
@@ -89,7 +120,7 @@ Add `flutter-mobile` for a Flutter app. Review the installed rules' `paths` fron
 node install.mjs --global
 ```
 
-This copies only the skills to `~/.claude/skills/`, or to `CLAUDE_CONFIG_DIR/skills` when that configuration directory is set. Framework rules and project instructions remain project-specific. Choose project or personal installation intentionally: a personal skill with the same name can take precedence over a project's copy. Use project installation for team sharing and reproducibility.
+This copies only the skills to `~/.claude/skills/`, or to `CLAUDE_CONFIG_DIR/skills` when that configuration directory is set. Framework rules, `--docs` and project instructions remain project-specific and cannot be combined with `--global`. Choose project or personal installation intentionally: a personal skill with the same name can take precedence over a project's copy. Use project installation for team sharing and reproducibility.
 
 Personal files on your machine are not automatically available in cloud sessions. See the current [Claude Code skill locations and cloud guidance](https://code.claude.com/docs/en/skills).
 
@@ -119,7 +150,7 @@ For a new project, a useful initial prompt is:
 
 ## Existing files, collisions and updates
 
-The installer validates the pack, checks all destination conflicts before copying, and skips identical files. It never force-overwrites existing skills, rules or `CLAUDE.md`. A same-name skill with extra files is treated as a conflict, so instructions from two packs do not silently mix. Unrelated skills and settings remain intact.
+The installer validates the pack, checks all destination conflicts before copying, and skips identical files. It never force-overwrites existing skills, rules, project documents or `CLAUDE.md`. A same-name skill with extra files is treated as a conflict, so instructions from two packs do not silently mix. Unrelated skills, documents and settings remain intact.
 
 If a conflict occurs, compare the source and installed version and merge intentionally. If a copy is interrupted by an I/O error, rerun the command; identical files are skipped. Symlink destinations are rejected to avoid copying into an unexpected location.
 
@@ -133,12 +164,30 @@ From the pack directory:
 
 ```bash
 node validate.mjs
-node --test test-install.mjs
+node --test test-install.mjs test-package.mjs
 ```
 
-Validation checks the twelve names/frontmatter, complete local references, portable skill content and rule scoping. Installer tests exercise fresh/collision/dry-run/idempotent/relocated/global-in-isolation cases. These checks establish package/install behaviour, not how well a model performs each workflow.
+Validation checks the twelve names/frontmatter, complete skill references, portable content, rule scoping and document links in the installed layout. Installer tests exercise fresh/collision/dry-run/idempotent/relocated/global-in-isolation cases, including document conflicts and symlinks. Archive tests require Git and `unzip`; they check complete committed contents, checksums, independent installation and refusal to package dirty work or overwrite artifacts. These checks establish package/install behaviour, not how well a model performs each workflow.
 
 Use [EVALUATION.md](EVALUATION.md) for realistic Claude trial prompts and expected observable outcomes. Actual quality depends on project context, available tools and verification. The pack does not guarantee bug-free code, user satisfaction or automatic compliance.
+
+## Engineering playbook: from idea to release
+
+The [AI-assisted product engineering playbook](playbook/README.md) connects the skills through a researched, reusable working model: feature/task management, professional role handoffs, coding and architecture decisions, HTTP/event API contracts, design/product QA and production-readiness evidence.
+
+It includes a staged adoption plan, primary-source references and templates for project context, features, tasks, ADRs, API reviews, handoffs, releases and optional shared agent instructions. Published standards are distinguished from recommended team conventions.
+
+The playbook is a proposal to adapt and adopt, not proof of application quality. The installer copies it only with `--docs`; it does not replace conflicting project instructions or configure application CI, trackers or agent teams.
+
+## Versioned ZIP packages
+
+Use a reviewed commit or an archive built from it, rather than mixing files from older ZIPs. From a clean, committed checkout:
+
+```bash
+node package.mjs "/existing/output/directory"
+```
+
+This creates `claude-code-ai-skills-<version>-<commit>.zip` and its `.zip.sha256` checksum. The ZIP contains the skills, documents, playbook, installer, tests and license from that same commit. The command rejects uncommitted/untracked work and never overwrites an existing archive. It does not create a tag, upload files or publish a GitHub release. Verify the checksum and run validation after extracting; archive consumers do not need Git just to install the pack.
 
 ## Frequently asked questions
 
@@ -165,10 +214,11 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for focused changes, validation commands 
 ## Repository structure and sources
 
 - `skills/`: twelve self-contained skill folders; each can be copied individually with its references.
-- `templates/`: optional starter instructions and framework rule templates.
-- `manifest.json`: pack version and the shipped skill/rule names.
-- `install.mjs`, `validate.mjs`, `test-install.mjs`: dependency-free Node tooling.
-- `.github/workflows/validate.yml`: package validation and installer tests on Node.js 22 and 24.
+- `templates/`: optional starter instructions, framework rules and product-level document templates. Project-template links target their installed locations under `docs/`.
+- `playbook/`: engineering operating model, research sources and optional project-document templates.
+- `manifest.json`: pack version, shipped skill/rule names and project-document source/destination mapping.
+- `install.mjs`, `validate.mjs`, `package.mjs`, `test-*.mjs`: dependency-free Node tooling; packaging uses Git, and archive tests also use `unzip`.
+- `.github/workflows/validate.yml`: package validation, installer and archive tests on Node.js 22 and 24.
 
 The workflows are written for this pack. Research references that informed the organization include [Claude skills](https://code.claude.com/docs/en/skills), [path-specific rules](https://code.claude.com/docs/en/memory#path-specific-rules), [Vercel skills](https://github.com/vercel-labs/agent-skills), [Superpowers](https://github.com/obra/superpowers), [Trail of Bits](https://github.com/trailofbits/skills), [Supabase skills](https://github.com/supabase/agent-skills) and [Marketing Skills](https://github.com/coreyhaines31/marketingskills). Those packages are not installed as dependencies. Check current official documentation when a task depends on changing framework behaviour, platform policies or tool features.
 

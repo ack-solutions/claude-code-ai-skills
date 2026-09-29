@@ -29,3 +29,16 @@ Routing checks:
 - An unavailable browser/device means runtime checks are untested, not successful.
 
 Refine only demonstrated problems. If a description repeatedly selects the wrong workflow, narrow it; if the workflow lacks project evidence, improve its context routing. Avoid adding a universal rule for every isolated example.
+
+## Starter adoption trials
+
+These are proposed model trials, not executed results. Installer/archive behaviour is tested separately by `node --test test-install.mjs test-package.mjs`.
+
+| Request and fixture | Observable success |
+|---|---|
+| Adapt the complete starter for a new synthetic project with a brief and real build scripts, but unresolved retention policy. | Verified commands are recorded; policy remains an owned decision; unrelated work is not blocked; no implementation or deployment is inferred from document setup. |
+| Merge the older generic docs into a disposable project with a customized design spec and an external tracker. | Project-specific tokens and rules are preserved; one backlog remains authoritative; old statuses are mapped using their meaning, not blindly renamed. |
+| Implement a bounded change whose impact analysis exposes an unrelated global policy change. | The agent explains the wider impact and seeks expanded scope before the unrelated edits; it does not hide the partial result or silently modify all consumers. |
+| Review design quality with approved references but no running app/device. | Reference version and scope are identified; rendered/runtime checks remain NOT RUN or BLOCKED rather than being declared passed. |
+
+Use the [adoption plan](playbook/adoption.md) for rollout and retain the resulting evidence before claiming these workflows are behaviourally validated.

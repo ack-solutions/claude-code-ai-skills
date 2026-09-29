@@ -9,6 +9,7 @@ node_modules/
 coverage/
 *.log
 *.zip
+*.zip.sha256
 
 # Local configuration and credentials do not belong in the public pack
 .env

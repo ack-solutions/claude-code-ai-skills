@@ -14,10 +14,14 @@ No package installation is required. Use Node.js 22 or later:
 
 ```bash
 node validate.mjs
-node --test test-install.mjs
+node --test test-install.mjs test-package.mjs
 ```
 
 Installer tests create isolated temporary directories. They must not write to a contributor's real Claude configuration, reset application databases or contact external services. Add behaviour-focused tests when changing the installer.
+
+Archive tests also use Git and `unzip` in isolated fixtures. Documentation links are checked against the installed layout, not only the source tree. Project-document templates intentionally contain fields awaiting real decisions; preserve their distinction from approved requirements. Keep lifecycle definitions in `playbook/delivery.md`, and link them from templates instead of maintaining competing state lists.
+
+After reviewing and committing a version change, run `node package.mjs /existing/output/directory` to produce a version-and-commit-named ZIP and SHA-256 checksum. The command rejects dirty/untracked work and existing artifacts. It packages committed files only; it does not tag, upload or publish a release. Inspect the archive and test a fresh install before distribution.
 
 ## Improve a skill
 

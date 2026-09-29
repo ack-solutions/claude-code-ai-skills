@@ -21,8 +21,67 @@ export function listFiles(directory) {
   return result;
 }
 
+function isSafeRelative(value) {
+  return typeof value === 'string' && value.length > 0 && !value.includes('\\') &&
+    !value.includes(':') && !path.posix.isAbsolute(value) &&
+    value.split('/').every(part => part && part !== '.' && part !== '..');
+}
+
+export function documentationPlan(root, manifest) {
+  assert(manifest.projectDocuments && typeof manifest.projectDocuments === 'object' && !Array.isArray(manifest.projectDocuments), 'Missing project document mapping');
+  const plan = Object.entries(manifest.projectDocuments).map(([target, source]) => {
+    assert(isSafeRelative(target) && target.startsWith('docs/') && !target.startsWith('docs/engineering/'), `Invalid document target: ${target}`);
+    assert(isSafeRelative(source) && /^(templates\/project|playbook\/templates)\/.+\.md$/.test(source), `Invalid document source: ${source}`);
+    let current = root;
+    for (const segment of source.split('/')) {
+      current = path.join(current, segment);
+      assert(!fs.lstatSync(current).isSymbolicLink(), `Symlink document source: ${source}`);
+    }
+    assert(fs.lstatSync(path.join(root, source)).isFile(), `Missing or unsafe document source: ${source}`);
+    return { source, target };
+  });
+  for (const relative of listFiles(path.join(root, 'playbook'))) {
+    const name = relative.split(path.sep).join('/');
+    plan.push({ source: `playbook/${name}`, target: `docs/engineering/${name}` });
+  }
+  plan.push({ source: 'manifest.json', target: 'docs/engineering/pack-manifest.json' });
+  assert.equal(new Set(plan.map(item => item.target)).size, plan.length, 'Duplicate document destination');
+  return plan;
+}
+
+function localLinks(content) {
+  return [...content.matchAll(/\]\(([^)]+)\)/g)]
+    .map(match => match[1])
+    .filter(link => !/^(?:https?:|mailto:|#)/.test(link))
+    .map(link => decodeURIComponent(link.split('#')[0]));
+}
+
+function validateDocuments(root, manifest) {
+  const plan = documentationPlan(root, manifest);
+  const destinations = new Set(plan.map(item => item.target));
+  for (const { source, target } of plan) {
+    if (!source.endsWith('.md')) continue;
+    const content = fs.readFileSync(path.join(root, source), 'utf8');
+    assert(!/\/Users\/|\/home\/[^\s/]+\/|[A-Z]:\\Users\\/.test(content), `Personal filesystem path in document: ${source}`);
+    for (const link of localLinks(content)) {
+      const resolved = path.posix.normalize(path.posix.join(path.posix.dirname(target), link));
+      assert(destinations.has(resolved), `Missing installed document reference: ${target} -> ${link}`);
+    }
+  }
+  // Project template links intentionally target the installed layout, checked above.
+  for (const relative of ['README.md', 'CONTRIBUTING.md', 'EVALUATION.md', 'templates/CLAUDE.md']) {
+    const content = fs.readFileSync(path.join(root, relative), 'utf8');
+    for (const link of localLinks(content)) {
+      const resolved = path.resolve(root, path.dirname(relative), link);
+      assert(!path.relative(root, resolved).startsWith('..') && fs.existsSync(resolved), `Missing repository reference: ${relative} -> ${link}`);
+    }
+  }
+  return plan.length;
+}
+
 export function validateKit(root = kitRoot) {
   const manifest = JSON.parse(fs.readFileSync(path.join(root, 'manifest.json'), 'utf8'));
+  assert(/^\d+\.\d+\.\d+$/.test(manifest.version), 'Invalid pack version');
   assert.equal(manifest.skills.length, 12, 'Expected the finalized 12 skills');
   assert.equal(new Set(manifest.skills).size, manifest.skills.length, 'Duplicate skill names');
   assert.equal(new Set(manifest.rules).size, manifest.rules.length, 'Duplicate rule names');
@@ -61,13 +120,13 @@ export function validateKit(root = kitRoot) {
     assert(/^---\npaths:\n(?:  - "[^\n]+"\n)+---\n/.test(text), `Missing path-scoped frontmatter: ${name}`);
   }
   assert(fs.existsSync(path.join(root, 'templates', 'CLAUDE.md')), 'Missing project starter');
-  return { manifest, skillFiles: files };
+  return { manifest, skillFiles: files, documentFiles: validateDocuments(root, manifest) };
 }
 
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   try {
     const result = validateKit();
-    console.log(`Validated ${result.manifest.skills.length} skills, ${result.skillFiles} skill files, and ${result.manifest.rules.length} optional rules.`);
+    console.log(`Validated v${result.manifest.version}: ${result.manifest.skills.length} skills, ${result.skillFiles} skill files, ${result.manifest.rules.length} optional rules, and ${result.documentFiles} installable document files and their local links.`);
   } catch (error) {
     console.error(error.message);
     process.exitCode = 1;

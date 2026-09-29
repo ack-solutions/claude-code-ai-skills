@@ -1,6 +1,6 @@
 {
   "name": "claude-code-ai-skills",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "skills": [
     "product-planning",
     "product-design",
@@ -15,5 +15,15 @@
     "release-engineering",
     "growth-strategy"
   ],
-  "rules": ["nestjs-api", "react-admin", "flutter-mobile", "database-contracts"]
+  "rules": ["nestjs-api", "react-admin", "flutter-mobile", "database-contracts"],
+  "projectDocuments": {
+    "docs/README.md": "templates/project/README.md",
+    "docs/REQUIREMENTS.md": "templates/project/REQUIREMENTS.md",
+    "docs/DESIGN_SPEC.md": "templates/project/DESIGN_SPEC.md",
+    "docs/ARCHITECTURE.md": "templates/project/ARCHITECTURE.md",
+    "docs/WORKFLOW.md": "templates/project/WORKFLOW.md",
+    "docs/TASKS.md": "templates/project/TASKS.md",
+    "docs/PROJECT_CONTEXT.md": "playbook/templates/project-context.md",
+    "docs/features/_TEMPLATE.md": "playbook/templates/feature.md"
+  }
 }

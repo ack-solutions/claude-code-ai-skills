@@ -13,6 +13,8 @@ Inspect the relevant brief, screen/flow references, design tokens, components an
 
 Identify the user's goal, primary action, information needed to decide, entry/exit points and constraints. Existing tokens and components take precedence over generic styling preferences. For a new product, propose a small coherent visual foundation before proliferating screens.
 
+When the project has a shared design specification, maintain foundations and cross-feature patterns there and link feature-specific flows to it. Identify the approved reference revision, supported environments, acceptance targets and reviewer; do not treat a template or an unreviewed mockup as an approved design.
+
 ## Design the experience
 
 1. Map the journey and meaningful alternatives, including cancel/back, interruption, validation and recovery. Keep technical implementation details out of product copy unless users need them to decide.
