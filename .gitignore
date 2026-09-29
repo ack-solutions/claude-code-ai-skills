@@ -1,0 +1,19 @@
+# OS and editor state
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Local dependencies, output and archives
+node_modules/
+coverage/
+*.log
+*.zip
+
+# Local configuration and credentials do not belong in the public pack
+.env
+.env.*
+!.env.example
+.claude/
+*.pem
+*.key

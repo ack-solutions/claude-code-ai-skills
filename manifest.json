@@ -1,0 +1,19 @@
+{
+  "name": "claude-code-ai-skills",
+  "version": "1.0.0",
+  "skills": [
+    "product-planning",
+    "product-design",
+    "feature-delivery",
+    "product-quality",
+    "design-quality",
+    "code-quality",
+    "systematic-debugging",
+    "data-integrity",
+    "security-audit",
+    "performance-review",
+    "release-engineering",
+    "growth-strategy"
+  ],
+  "rules": ["nestjs-api", "react-admin", "flutter-mobile", "database-contracts"]
+}
