@@ -5,7 +5,7 @@ paths:
 
 # NestJS API conventions
 
-Use this rule only for the NestJS API. Adapt the path pattern to this project's actual API directory when installing it.
+Use this rule only for the NestJS API. During setup, inspect the project's API location and propose corrected `paths` if needed before relying on the rule. Keep existing module boundaries; installation does not approve an architecture change.
 
 - Follow existing modules, dependency injection, transport conventions and domain ownership. Controllers translate/validate requests; business decisions belong in the appropriate service/domain owner.
 - Discover the actual authentication, permission and request-context libraries before extending them. Enforce operation and object/tenant ownership on the server.

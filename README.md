@@ -8,7 +8,7 @@ Turn product ideas into scoped requirements, design clear user journeys, impleme
 
 The skills discover your project's actual stack and conventions. Optional **React, NestJS, Flutter and database rule templates** add file-specific engineering guidance without forcing a framework or architecture.
 
-By [ACK Solutions](https://github.com/ack-solutions) · Version 1.1.0 · [MIT license](LICENSE) · Dependency-free installer
+By [ACK Solutions](https://github.com/ack-solutions) · Version 1.1.1 · [MIT license](LICENSE) · Dependency-free installer
 
 [Quick start](#quick-start) · [Project starter](#project-starter-documents) · [Skill catalog](#skill-catalog) · [Engineering playbook](playbook/README.md) · [Framework rules](#optional-framework-rules) · [Validation](#validate-and-evaluate) · [Contributing](CONTRIBUTING.md)
 
@@ -43,6 +43,12 @@ Restart Claude Code in the target project, or run `/reload-skills` in an existin
 
 Commit the installed skill folders in your application repository to share them with teammates. The skills themselves are Markdown and require no Node runtime; only the installer and package tests use Node.
 
+**Only need one skill?** Copy its entire folder, including `references/` if present, from `skills/<name>/` into your project's `.claude/skills/<name>/`. Compare any existing same-name folder first. Manual copying does not run the installer's conflict checks. A standalone skill does not require installing every sibling mentioned as an alternative workflow.
+
+### When not to use this pack
+
+Do not treat it as a guarantee of bug-free software, security certification or a substitute for domain expertise and accountable review. Use a relevant workflow, not all twelve skills for a trivial edit. Installed instructions cannot supply missing product decisions, tool access, runtime evidence or real-user research.
+
 ## Project starter documents
 
 Use this one shared repository for reusable guidance; keep each application's code and adopted product decisions in its own application repository. You do not need a new skills repository for every project.
@@ -68,7 +74,7 @@ node install.mjs "/absolute/path/to/your-project" --starter --docs
 
 Start Claude Code in the target project and ask:
 
-> Read CLAUDE.md, docs/README.md and docs/PROJECT_CONTEXT.md. Inspect the actual project and fill in verified commands and document locations. Use product-planning to propose the requirements for my idea, identifying decisions I need to make. Keep proposed choices distinct from approved requirements. Do not implement application code or deploy anything yet.
+> Read CLAUDE.md, docs/README.md and docs/PROJECT_CONTEXT.md. Inspect the actual project and fill in verified commands and document locations. If framework rules are installed, read .claude/rules directly and propose corrections to paths that do not match our folders. Use product-planning to propose the requirements for my idea, identifying decisions I need to make. Keep proposed choices distinct from approved requirements. Do not implement application code or deploy anything yet.
 
 `--docs` and `--starter` are independent. Installing documents does not replace root instructions, approve requirements, create agents or configure CI/trackers. The short instructions route to relevant documents on demand; the whole playbook is not automatically imported. Complete only the fields the current work needs.
 
@@ -113,6 +119,8 @@ node install.mjs "/absolute/path/to/your-project" --starter --rules=nestjs-api,r
 ```
 
 Add `flutter-mobile` for a Flutter app. Review the installed rules' `paths` frontmatter and retarget it to your actual folders. The starter is a working agreement, not a product specification. Ask Claude to add verified project commands and document locations after inspecting the project. Existing conflicting instructions are never overwritten.
+
+Read the installed rule files explicitly during setup: a rule with nonmatching paths may never activate, so an instruction inside it cannot reliably repair its own scope. Confirm representative files match the intended rule and unrelated files do not. The installer neither discovers the stack nor rewrites rule paths automatically.
 
 ## Make the skills available in all your local projects
 
@@ -171,6 +179,8 @@ Validation checks the twelve names/frontmatter, complete skill references, porta
 
 Use [EVALUATION.md](EVALUATION.md) for realistic Claude trial prompts and expected observable outcomes. Actual quality depends on project context, available tools and verification. The pack does not guarantee bug-free code, user satisfaction or automatic compliance.
 
+The [small synthetic cases](evaluation/smoke-cases.md) support paired routing and behaviour trials without building a full application. These model trials are separate from the automated package checks; see their [execution status](evaluation/status.md) before assuming they have run.
+
 ## Engineering playbook: from idea to release
 
 The [AI-assisted product engineering playbook](playbook/README.md) connects the skills through a researched, reusable working model: feature/task management, professional role handoffs, coding and architecture decisions, HTTP/event API contracts, design/product QA and production-readiness evidence.
@@ -216,6 +226,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for focused changes, validation commands 
 - `skills/`: twelve self-contained skill folders; each can be copied individually with its references.
 - `templates/`: optional starter instructions, framework rules and product-level document templates. Project-template links target their installed locations under `docs/`.
 - `playbook/`: engineering operating model, research sources and optional project-document templates.
+- `evaluation/`: small synthetic model-trial fixtures, reviewer criteria and honest execution status; not installed into application projects.
 - `manifest.json`: pack version, shipped skill/rule names and project-document source/destination mapping.
 - `install.mjs`, `validate.mjs`, `package.mjs`, `test-*.mjs`: dependency-free Node tooling; packaging uses Git, and archive tests also use `unzip`.
 - `.github/workflows/validate.yml`: package validation, installer and archive tests on Node.js 22 and 24.

@@ -7,6 +7,7 @@ Follow the user's explicit request and existing project decisions. Use the relev
 - Read the README, relevant manifests and existing tests to discover setup, stack and commands. Record verified project-specific commands here when asked to configure the project.
 - Use existing product requirements for behaviour, architecture notes for module boundaries, and design tokens/components for UI work. If they do not exist, establish only the context the requested task needs.
 - If the project starter docs are installed, begin with `docs/README.md` and `docs/PROJECT_CONTEXT.md`; read the relevant requirements, design, architecture and feature records on demand. Templates and proposed playbook rules are not automatically approved decisions.
+- During project setup or rule configuration, inspect installed `.claude/rules/` files explicitly and compare their `paths` with actual source folders. Propose corrections before relying on those rules; a nonmatching rule may never load itself. Do not edit configuration as a side effect of an ordinary review.
 - State material assumptions. Resolve missing product choices that change the outcome, while proceeding on safe independent work.
 
 ## Implementation

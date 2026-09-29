@@ -7,6 +7,7 @@ Follow the current user's scope and accepted project decisions. This agreement d
 - Read `docs/PROJECT_CONTEXT.md` for actual commands, owners and authoritative document locations. Adapt this path when configuring the project.
 - Read the assigned task, acceptance criteria and relevant feature/design/contract records. Do not load every project document or skill.
 - Inspect applicable local instructions and existing implementation before choosing patterns. Raise material conflicts; proceed on safe independent work.
+- When configuring Claude rules, inspect `.claude/rules/` directly and compare `paths` with actual folders before relying on them. Propose necessary corrections within the setup task; do not assume nonmatching rules will load or edit configuration during an ordinary review.
 
 ## Deliver scoped work
 

@@ -4,6 +4,8 @@ Status: executable package checks are separate from model behaviour. This file i
 
 For each trial record model/version if available, prompt, selected skill, supplied project evidence, actions taken, output, verification and observed problems. Evaluate whether the task was solved, boundaries respected and claims supported; do not score merely by matching headings or words.
 
+Start with the [small synthetic cases](evaluation/smoke-cases.md) and [current execution status](evaluation/status.md). They supply raw fixtures and review criteria; give the agent only the relevant fixture and prompt, not the expected answer. Use fresh disposable projects for each case. Compare the previous and candidate pack using the same model, tools and permissions, and include a skills-disabled baseline where practical. Inspect actual skill invocations separately from output quality; the agent naming a skill is not evidence that it loaded it. Record repeated observations without treating a small sample as a reliable success rate.
+
 | Skill | Representative prompt and inputs | Observable success |
 |---|---|---|
 | product-planning | Research two appointment tools and define an MVP from an actual audience brief. | Current linked evidence is separated from hypotheses; scope and acceptance criteria reflect the brief. |

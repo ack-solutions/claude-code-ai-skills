@@ -9,7 +9,7 @@ paths:
 
 # Database and contract conventions
 
-Adapt the paths to the actual schema, migration and shared-contract locations. Follow the chosen database and ORM; this template does not authorize replacing them.
+During setup, inspect the actual schema, migration runner and shared-contract locations and propose corrected `paths` if needed before relying on this rule. Follow the chosen database and ORM; this template does not authorize replacing them.
 
 - Identify canonical identities, record ownership and units. Preserve distinctions between authentication identities and application/domain records when the project has them.
 - Reuse authoritative contract definitions. Keep runtime validation, API schema, client types and storage constraints compatible; do not assume type declarations validate runtime input.
