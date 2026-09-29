@@ -11,10 +11,12 @@ Use the relevant requirements as the test oracle. For each case record:
 | Expected | Visible result and important downstream/persisted effect |
 | Actual and evidence | Observed result, trace, screenshot or test output |
 | Context | Build/environment, device/browser, language and relevant settings |
-| Status | PASS, FAIL, BLOCKED or NOT TESTED |
+| Status | PASS, FAIL, BLOCKED or NOT RUN |
 
 Use only useful scenario combinations. A risk-based sample must describe its coverage; do not imply every device or state was exercised.
 
 Distinguish blockers from severity: an unavailable test environment blocks evaluation but does not prove a product defect. A failure's severity follows user impact, frequency/exposure and recovery options.
+
+Use BLOCKED for a case whose execution is prevented by a named prerequisite, and NOT RUN for a case not executed. Record the reason and next action where useful. Do not mark unavailable or unexecuted coverage PASS.
 
 For cross-role actions, verify both sides. For asynchronous work, use an observable completion condition with a bounded timeout, and inspect failure/retry behaviour where relevant.

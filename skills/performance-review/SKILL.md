@@ -1,6 +1,6 @@
 ---
 name: performance-review
-description: Investigate measured slowness, resource usage, or capacity in APIs, databases, web interfaces, and mobile apps. Use for performance profiling, optimization review, or workload-based scaling decisions.
+description: Investigate slowness, resource usage and capacity in APIs, databases, web and mobile apps. Use for profile this endpoint, why is this screen slow, or measure this optimization. Functional failures may also need systematic-debugging; dedicated security reviews belong to security-audit.
 ---
 
 # Performance review
@@ -29,6 +29,6 @@ Use controlled before/after measurements with equivalent workload and environmen
 
 Use local/staging synthetic workloads unless another target and load level are authorized. Do not stress production as a side effect of an audit. Report limits when hardware, realistic data or profiling tools are unavailable.
 
-## Deliver
+## Report format
 
-Give workload and method, observed bottleneck/evidence, prioritized actions and tradeoffs. For changes, report before/after values with units, sample limitations and regression checks. Distinguish a capacity estimate from a demonstrated operating limit. Do not replace the architecture merely to make it appear scalable.
+Use the project's performance report or a compact default: workload/environment; method and samples; bottleneck evidence; prioritized actions/tradeoffs; verification and limits. For measured changes, include before/after values with units and correctness/error checks. If no change or measurement was made, say so rather than filling in an invented comparison. Distinguish a capacity estimate from a demonstrated operating limit. Do not replace the architecture merely to make it appear scalable.

@@ -36,6 +36,8 @@ The definitions and transition conditions are authoritative in [delivery](delive
 
 For old feature labels, DRAFT normally maps to PROPOSED; old DONE needs evidence review before mapping to ACCEPTED or RELEASED. Preserve identifiers, decisions and history. Do not bulk relabel records without inspecting what each status meant.
 
+Check results are separate from task states. Current skill reports use PASS, FAIL, BLOCKED and NOT RUN, matching the playbook. Older reports may say NOT TESTED; retain their history and interpret that as unexecuted coverage, not a pass. For new reports, use BLOCKED when a named prerequisite prevents a check, and NOT RUN when it was not executed.
+
 ## Safe installation and updates
 
 1. Choose a reviewed upstream version/commit and preserve the project's current baseline.

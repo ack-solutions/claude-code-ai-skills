@@ -1,6 +1,6 @@
 ---
 name: design-quality
-description: Audit an existing design or running UI for visual fidelity, interaction clarity, accessibility, responsiveness, localization, and visual regressions. Use for design QA, screenshot comparison, or interface quality testing.
+description: Audit existing designs or UI for visual fidelity, accessibility, responsiveness and localization. Use for design QA, compare these screenshots, or check this layout. For creating a new design prefer product-design; for complete new-feature implementation prefer feature-delivery.
 ---
 
 # Design quality
@@ -29,10 +29,10 @@ Use available browser, design or device tools to render and inspect results. Cho
 
 Keep screenshot environments and fixtures stable: fonts, dimensions, locale, theme, data and motion. Review differences as product/design changes; do not regenerate baselines simply to silence failures. Device-specific rendering, assistive technology and external-app behaviour require appropriate runtime checks.
 
-If tools are unavailable, report what source-level inspection establishes and mark visual/runtime checks NOT TESTED. Never describe unseen screenshots as inspected.
+If tools are unavailable, report what source-level inspection establishes. Mark visual/runtime checks BLOCKED when a named missing prerequisite prevents execution, or NOT RUN when not executed. Never describe unseen screenshots as inspected.
 
-## Deliver
+## Report format
 
-For each finding identify screen/component/state, reference, expected/actual result, reproduction settings, impact and suggested correction. Attach screenshots/diffs when available. Prioritize task-blocking, inaccessible or misleading behaviour ahead of decorative preferences.
+Use the project's review format or this compact default per finding: screen/component/state; reference and revision; expected versus actual; reproduction settings; evidence; impact; suggested correction and retest. Attach screenshots/diffs when available. Separate observed defects from preferences and unverified hypotheses; prioritize task-blocking, inaccessible or misleading behaviour ahead of decoration.
 
 An audit returns findings. A requested fix may update the relevant component/token or screen, followed by affected-state retesting. Do not change business rules or the whole visual direction to resolve one layout defect. Summarize coverage and remaining manual checks.

@@ -1,6 +1,6 @@
 ---
 name: systematic-debugging
-description: Investigate bugs, regressions, flaky tests, and unexpected behaviour using reproduction and root-cause evidence. Apply and verify a fix when requested; diagnosis-only requests return findings.
+description: Investigate bugs, regressions and flaky tests using reproduction and root-cause evidence. Use for why does this fail, diagnose this regression, or fix this bug. Diagnosis returns findings; requested fixes include verification. For general cleanup without a reported failure prefer code-quality.
 ---
 
 # Systematic debugging

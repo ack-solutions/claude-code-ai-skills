@@ -1,6 +1,6 @@
 ---
 name: feature-delivery
-description: Implement a defined feature across the affected UI, API, data, and tests. Use for feature implementation or a scoped end-to-end change, including integration and documentation.
+description: Implement a defined feature across affected UI, API, data and tests. Use for build this feature, implement the approved flow, or wire this UI to the API. Planning-only requests belong to product-planning; audit-only requests belong to the relevant review workflow.
 ---
 
 # Feature delivery

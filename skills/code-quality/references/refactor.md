@@ -19,3 +19,12 @@ Afterward:
 - Compare relevant success, failure and permission cases against the intended contract.
 - Run applicable checks and inspect the diff for scope and leftover diagnostics.
 - Explain any remaining duplication that is intentional and why.
+
+## When not to introduce an abstraction
+
+- Similar code expresses different policies or belongs to owners who must evolve independently.
+- No current caller needs the proposed extension points; a speculative generic layer adds complexity without demonstrated reuse.
+- The shared helper requires unrelated flags or callbacks that obscure the domain meaning instead of clarifying it.
+- Contract/side-effect differences are unresolved or behaviour cannot be verified sufficiently for the change's risk. Clarify or add focused coverage before combining them.
+
+These conditions stop the proposed abstraction, not unrelated authorized work. Retain justified duplication and explain the ownership boundary.

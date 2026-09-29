@@ -1,6 +1,6 @@
 ---
 name: product-quality
-description: Test complete user journeys against requirements using acceptance, exploratory, recovery, and cross-role checks. Use to assess a feature, prototype, or release for product correctness and usability.
+description: Test complete user journeys against requirements, including recovery and cross-role effects. Use for test this user flow, acceptance testing, or can users complete this task. For visual or accessibility-only review prefer design-quality.
 ---
 
 # Product quality
@@ -29,7 +29,7 @@ For requested usability evaluation, use [study guidance](references/usability.md
 
 ## Report and hand off
 
-Record PASS, FAIL, BLOCKED or NOT TESTED for each relevant case. Give expected/actual behaviour, reproduction steps, environment, evidence and severity for defects. A blocked critical journey remains a coverage gap, not a pass.
+Use the project's test format or [the journey matrix](references/journey-matrix.md). A compact report can use one row per case with case/steps, expected result, actual result/evidence, environment and status. Record PASS, FAIL, BLOCKED or NOT RUN. BLOCKED identifies a specific missing prerequisite; NOT RUN means no execution was performed. Neither establishes a product defect or a pass. Give severity with user impact for observed defects.
 
 Audit requests return findings. If fixes are also requested, address the cause, add meaningful regression coverage and retest the journey. Feed requirement gaps into the authoritative brief. Link visual/accessibility findings to the design-quality concern without duplicating or inflating the defect list.
 

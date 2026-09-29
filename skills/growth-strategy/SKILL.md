@@ -1,6 +1,6 @@
 ---
 name: growth-strategy
-description: Plan or review acquisition, activation, retention, ASO, public-site SEO, analytics, and launch experiments. Use for product launch strategy, app listing optimization, or conversion and growth analysis.
+description: Plan or review acquisition, activation, retention, ASO, public-site SEO and analytics. Use for plan my launch, improve this app listing, or investigate conversion. SEO requires a public surface; activation and adoption analysis can still apply to private products.
 ---
 
 # Growth strategy

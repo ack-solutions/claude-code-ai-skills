@@ -1,6 +1,6 @@
 ---
 name: code-quality
-description: Audit code organization, coupling, repeated business logic, reuse, or complexity, and perform scoped refactoring when requested. Use for maintainability reviews and code cleanup, not diagnosis of a specific runtime failure.
+description: Audit code organization, coupling, duplicated business rules and reuse, or perform requested refactoring. Use for maintainability reviews, remove duplicated logic, or clean up this module. For a specific failure prefer systematic-debugging; for a dedicated security review prefer security-audit.
 ---
 
 # Code quality
@@ -33,8 +33,15 @@ Similar syntax is not sufficient evidence for abstraction. Separate business con
 
 Use [the refactor checklist](references/refactor.md) for changes across callers or shared state. Keep changes reviewable, move a rule to its correct owner, and update all affected in-scope consumers. Preserve external contracts, permissions and intended observable behaviour. Identify any required functional change explicitly.
 
-## Deliver
+## Report format
 
-For each material finding, include the file/symbol, affected callers, concrete impact, proposed change and verification approach. Distinguish correctness defects, maintenance costs and optional preferences. Prioritize by impact and confidence; do not invent a quality score or enforce arbitrary file-length targets.
+Use the project's review format or this compact default per material finding:
+
+- Finding and kind: correctness defect, maintenance cost or optional preference.
+- Location and callers: file/symbol and affected consumers.
+- Evidence and impact: observed behaviour or coupling, with uncertainty stated.
+- Proposed change and verification: intended improvement and checks that would establish it.
+
+Prioritize by impact and confidence; do not invent a quality score or enforce arbitrary file-length targets. Report relevant security or runtime defects encountered rather than ignoring them because a specialist workflow exists.
 
 For implemented refactors, report the changed responsibility/reuse and checks actually run. Do not equate fewer lines or a passing linter with a correct refactor.

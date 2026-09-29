@@ -30,4 +30,4 @@ Use [the runbook outline](references/runbook.md) only where a new or changed pro
 
 Run applicable configuration/build checks and authorized environment smoke tests. Verify migrations and recovery in a safe environment where possible. Report checks that could not run and specific prerequisites such as absent accounts, signing material or chosen hosting.
 
-Produce a readiness report or implemented setup with target, artifact, checks, operational gaps and rollout/recovery instructions. After an authorized deployment, verify observed health and report the actual state; never claim a planned deployment happened.
+Use the project's release record or this compact report: target/environment; artifact/version; checks actually run and evidence; gaps and owners; rollout/recovery steps; authorization and actual deployment state. Adapt to review versus implementation rather than filling every section for a small configuration edit. After an authorized deployment, verify observed health; never claim a planned deployment happened.

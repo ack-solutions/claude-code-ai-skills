@@ -29,6 +29,14 @@ Use authorized local/staging accounts and synthetic data. Build minimal tests fo
 
 Privacy/legal implications depend on jurisdiction and facts. Identify engineering evidence and open compliance questions using current authoritative sources; do not certify legal compliance from a code review.
 
-## Deliver
+## Report format
 
-For each finding give severity with rationale, location, prerequisites, impact, evidence, correction and test. Include coverage and limitations. If no actionable issue is found, state the bounded scope checked rather than asserting that the whole application is secure.
+Use the project's security-report format or this compact default per finding:
+
+- Title and location: affected file/symbol or reachable operation.
+- Severity and confidence: use the project's severity scale, or Critical/High/Medium/Low with impact rationale; separately state confirmed evidence versus uncertainty. Do not invent a numerical confidence score.
+- Prerequisites and impact: required access/conditions and the affected assets or actors.
+- Evidence: reproducible path, relevant controls and sanitized observations.
+- Fix direction and verification: correct enforcement boundary, proposed regression checks and any checks actually run.
+
+Include coverage and limitations. Omit empty findings when no actionable issue is found; state the bounded scope checked rather than asserting that the whole application is secure.

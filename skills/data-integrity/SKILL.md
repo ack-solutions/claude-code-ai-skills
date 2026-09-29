@@ -1,6 +1,6 @@
 ---
 name: data-integrity
-description: Review or change data contracts, schema, migrations, uniqueness, transactions, or retry/concurrency behaviour. Use when inconsistent data, duplicate records, contract drift, or persistence changes are the task.
+description: Review or change data contracts, schema, migrations, transactions and concurrency. Use for review this migration, prevent duplicate records, or resolve inconsistent data. For authorization-focused reviews prefer security-audit; authoritative data ownership and persistence invariants remain in scope.
 ---
 
 # Data integrity
