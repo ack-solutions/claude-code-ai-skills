@@ -6,11 +6,13 @@
 
 Turn product ideas into scoped requirements, design clear user journeys, implement features, and review code, product quality, accessibility, security and performance. This collection also covers DevOps, release readiness, market research, search engine optimization (SEO) and app store optimization (ASO).
 
-The skills discover your project's actual stack and conventions. Optional **React, NestJS, Flutter and database rule templates** add file-specific engineering guidance without forcing a framework or architecture.
+The skills guide Claude to inspect your project's actual stack and conventions. Optional **React, NestJS, Flutter and database rule templates** add file-specific engineering guidance without forcing a framework or architecture.
 
 By [ACK Solutions](https://github.com/ack-solutions) · Version 1.1.1 · [MIT license](LICENSE) · Dependency-free installer
 
-[Quick start](#quick-start) · [Project starter](#project-starter-documents) · [Skill catalog](#skill-catalog) · [Engineering playbook](playbook/README.md) · [Framework rules](#optional-framework-rules) · [Validation](#validate-and-evaluate) · [Contributing](CONTRIBUTING.md)
+[Quick start](#quick-start) · [Where CLAUDE.md belongs](#where-claudemd-belongs) · [Installed documents](#project-starter-documents) · [Skill catalog](#skill-catalog) · [Framework rules](#optional-framework-rules) · [Troubleshooting](#troubleshooting) · [Validation](#validate-and-evaluate) · [Contributing](CONTRIBUTING.md)
+
+**This is an AI guidance toolkit, not an application boilerplate.** It installs Markdown skills, optional instructions and documentation templates. It does not create a React/NestJS/Flutter application, install application dependencies, configure CI, create an agent team or deploy anything. Those are separate tasks after you agree on the product and implementation plan.
 
 ## Why use this skill pack?
 
@@ -22,28 +24,112 @@ By [ACK Solutions](https://github.com/ack-solutions) · Version 1.1.1 · [MIT li
 
 Skills are reusable instructions, not autonomous employees or a guarantee of bug-free software. Their effectiveness depends on project context, available tools, model behaviour and verification.
 
+## Where CLAUDE.md belongs
+
+There are two different repositories:
+
+- **This toolkit:** keep reusable skills and templates here. `templates/CLAUDE.md` is the master template for new applications.
+- **Your application:** keep its code, project-specific instructions and completed documents here. The installer copies the master template to your application's root as `CLAUDE.md` when you pass `--starter`.
+
+For example, keep the toolkit and application in separate sibling folders:
+
+```text
+projects/
+├── claude-code-ai-skills/          Toolkit checkout
+│   ├── install.mjs
+│   └── templates/
+│       └── CLAUDE.md              Reusable source template
+└── my-new-app/                    Your application
+    ├── CLAUDE.md                  Installed project instructions
+    ├── .claude/
+    │   ├── skills/                Installed skills
+    │   └── rules/                 Only when --rules is selected
+    └── docs/                      Only when --docs is selected
+```
+
+You do **not** need the toolkit's `templates/` folder inside your application. Customize the installed `CLAUDE.md` and docs for that project; keep the toolkit templates generic. These are independent copies, not automatically synchronized files. Root `CLAUDE.md` is a supported location for Claude Code project instructions. [Claude project memory documentation](https://code.claude.com/docs/en/memory#claudemd-files).
+
 ## Quick start
 
-Use **Claude Code** and Node.js 22 or later for the installer. Clone the repository, then preview and install into your project:
+### Prerequisites
+
+- **Claude Code** installed and authenticated to use the skills. Follow the [official Claude Code quickstart](https://code.claude.com/docs/en/quickstart). The installer does not install Claude or sign you in.
+- **Node.js 22 or later** to run this repository's installer and validation commands. No `npm install` is needed for the toolkit. Manually copying a skill folder does not require Node.js.
+- **Git** if you clone the toolkit. Alternatively, extract a trusted ZIP and use its actual extracted directory name in the commands below.
+
+Your normal Claude Code account/provider access is required to run Claude. The toolkit adds no separate API key, service subscription or account connection.
+
+### Get the toolkit
+
+In a terminal, open the parent folder where you keep development projects, then run:
 
 ```bash
 git clone https://github.com/ack-solutions/claude-code-ai-skills.git
-cd claude-code-ai-skills
-node install.mjs "/absolute/path/to/your-project" --dry-run
-node install.mjs "/absolute/path/to/your-project"
 ```
 
-Replace the example path with an existing project directory. The first command previews the changes; the second installs all twelve skills into that project's `.claude/skills/`. No npm install, additional API key or paid service is required by the pack. Your normal Claude Code access is still required.
+If you already have a checkout, use that checkout instead of cloning over it. **Choose A or B below.** Both examples start from the parent folder containing `claude-code-ai-skills`, not from inside that folder. If your toolkit is elsewhere, use its actual path to `install.mjs`. Keep paths containing spaces in quotes; on Windows use your actual filesystem path in place of a Unix-style example.
 
-Restart Claude Code in the target project, or run `/reload-skills` in an existing session. Try:
+### A. New project: skills, instructions and documents
+
+Choose a new folder name. The installer requires the target directory to exist, so create it first:
+
+```bash
+mkdir my-new-app
+node claude-code-ai-skills/install.mjs ./my-new-app --starter --docs --dry-run
+node claude-code-ai-skills/install.mjs ./my-new-app --starter --docs
+```
+
+The preview reports what would be copied without creating files. The second installer command copies the 12 skills, root `CLAUDE.md`, project documents and playbook. It does not generate application code or initialize a Git repository.
+
+Start Claude **inside your application**, not inside the toolkit:
+
+```bash
+cd my-new-app
+claude
+```
+
+Sign in if prompted, then use the [first-project prompt](#first-project-prompt) below. If the target folder already contains project instructions or docs, use the existing-project guidance instead of overwriting them.
+
+### B. Existing project: add skills without replacing project documents
+
+Replace `/absolute/path/to/existing-app` with an existing application directory. These commands install skills only:
+
+```bash
+node claude-code-ai-skills/install.mjs "/absolute/path/to/existing-app" --dry-run
+node claude-code-ai-skills/install.mjs "/absolute/path/to/existing-app"
+cd "/absolute/path/to/existing-app"
+claude
+```
+
+Your existing `CLAUDE.md` and documentation remain unchanged. Existing same-name skills can still conflict; the installer stops before copying rather than merging them automatically. Add `--starter`, `--docs` or framework rules only after reviewing their destinations. See [conflicts and updates](#existing-files-collisions-and-updates).
+
+### Confirm the installation
+
+In the application, check that `.claude/skills/` contains the twelve skill folders. After a full starter installation, also check root `CLAUDE.md` and `docs/README.md`. Start a fresh Claude Code session after installation and type `/` to look for a command such as `/code-quality`. For an existing module, try:
 
 ```text
 /code-quality Audit this module for duplicated business rules, unclear ownership and unnecessary coupling. Report findings before changing code.
 ```
 
-Commit the installed skill folders in your application repository to share them with teammates. The skills themselves are Markdown and require no Node runtime; only the installer and package tests use Node.
+Replace "this module" with the actual file or module you want reviewed. Once you have reviewed the installed files, commit the relevant skills, rules, instructions and documents in **your application's** repository to share them with teammates. Do not commit credentials or private local Claude settings.
 
-**Only need one skill?** Copy its entire folder, including `references/` if present, from `skills/<name>/` into your project's `.claude/skills/<name>/`. Compare any existing same-name folder first. Manual copying does not run the installer's conflict checks. A standalone skill does not require installing every sibling mentioned as an alternative workflow.
+### Install only one skill
+
+Copy the entire folder, including `references/` if present, from `skills/<name>/` into your application's `.claude/skills/<name>/`. For example, `skills/code-quality/` becomes `.claude/skills/code-quality/`. Compare any existing same-name folder first. Manual copying does not run the installer's conflict checks. A standalone skill does not require installing every sibling mentioned as an alternative workflow.
+
+### Installer options
+
+The installer always includes all 12 skills; optional flags add the following:
+
+| Option | Effect |
+|---|---|
+| `--starter` | Adds root `CLAUDE.md` if absent, or skips it if identical |
+| `--docs` | Adds the project documents and engineering playbook under `docs/` |
+| `--rules=name1,name2` | Adds only the named framework rules under `.claude/rules/` |
+| `--dry-run` | Validates and previews the selected installation without copying anything |
+| `--global` | Installs skills to your personal Claude configuration instead of a project; cannot be combined with a project path, `--starter`, `--docs` or `--rules` |
+
+`--starter` and `--docs` are independent: neither implies the other. A conflicting selected file causes both a preview and an actual install to stop before copying. There is no force-overwrite option. For command help, run `node install.mjs --help` **from the toolkit directory**.
 
 ### When not to use this pack
 
@@ -53,12 +139,7 @@ Do not treat it as a guarantee of bug-free software, security certification or a
 
 Use this one shared repository for reusable guidance; keep each application's code and adopted product decisions in its own application repository. You do not need a new skills repository for every project.
 
-For a new project, install the complete starter explicitly:
-
-```bash
-node install.mjs "/absolute/path/to/your-project" --starter --docs --dry-run
-node install.mjs "/absolute/path/to/your-project" --starter --docs
-```
+The [new-project setup](#a-new-project-skills-instructions-and-documents) installs the following. `.claude/rules/` is additional and optional; see [framework rules](#optional-framework-rules).
 
 | Installed location | Responsibility |
 |---|---|
@@ -72,9 +153,15 @@ node install.mjs "/absolute/path/to/your-project" --starter --docs
 | `docs/features/_TEMPLATE.md` | Feature behaviour, decisions, acceptance and rollout |
 | `docs/engineering/` | Playbook, task/ADR/API/handoff/release templates and pack manifest |
 
-Start Claude Code in the target project and ask:
+### First-project prompt
 
-> Read CLAUDE.md, docs/README.md and docs/PROJECT_CONTEXT.md. Inspect the actual project and fill in verified commands and document locations. If framework rules are installed, read .claude/rules directly and propose corrections to paths that do not match our folders. Use product-planning to propose the requirements for my idea, identifying decisions I need to make. Keep proposed choices distinct from approved requirements. Do not implement application code or deploy anything yet.
+After installing the full starter, replace the bracketed text and send this in Claude Code:
+
+> Read CLAUDE.md, docs/README.md and docs/PROJECT_CONTEXT.md. My app idea is [describe the problem, audience and intended platforms]. Inspect what actually exists. Record verified facts and mark unknown stack choices, commands and owners as undecided rather than inventing them. If framework rules are installed, read .claude/rules directly and propose corrections to paths that do not match our folders. Use product-planning to propose the initial requirements, user journeys and scope. Identify the design and architecture decisions I need to make, and propose the first small tasks. Keep proposals distinct from approved requirements. Do not implement application code or deploy anything yet.
+
+Review the proposal and settle decisions that affect the first task. Then, when you are ready to authorize implementation, use a scoped request such as:
+
+> Use feature-delivery to implement [approved task ID or outcome] using the agreed stack and linked acceptance criteria. If the application is empty, scaffold only the foundations this task needs. Run the applicable checks, update the owning documents and report anything not verified. Do not deploy.
 
 `--docs` and `--starter` are independent. Installing documents does not replace root instructions, approve requirements, create agents or configure CI/trackers. The short instructions route to relevant documents on demand; the whole playbook is not automatically imported. Complete only the fields the current work needs.
 
@@ -112,19 +199,25 @@ Skills describe tasks; path-specific rules describe conventions for matching fil
 | [`flutter-mobile`](templates/rules/flutter-mobile.md) | `apps/mobile` | Widgets, themes, localization, interaction state and platform behaviour |
 | [`database-contracts`](templates/rules/database-contracts.md) | Entities, migrations, shared types and data/API docs | Durable invariants, compatibility and authoritative contracts |
 
-For a new project that also needs a starter `CLAUDE.md`:
+If you have chosen React and NestJS, append `--rules=nestjs-api,react-admin,database-contracts` to both installer commands in the new-project setup. If the project is already installed, add just the selected rules with the following commands **from the toolkit directory** (replace the example target path):
 
 ```bash
-node install.mjs "/absolute/path/to/your-project" --starter --rules=nestjs-api,react-admin,database-contracts
+node install.mjs "/absolute/path/to/your-project" --rules=nestjs-api,react-admin,database-contracts --dry-run
+node install.mjs "/absolute/path/to/your-project" --rules=nestjs-api,react-admin,database-contracts
 ```
 
-Add `flutter-mobile` for a Flutter app. Review the installed rules' `paths` frontmatter and retarget it to your actual folders. The starter is a working agreement, not a product specification. Ask Claude to add verified project commands and document locations after inspecting the project. Existing conflicting instructions are never overwritten.
+The installer also checks the skills during this operation: identical files are skipped, and differing installed skills still block the whole installation. Do not add `--starter` again just to add rules to a project whose `CLAUDE.md` you have customized.
+
+Select `flutter-mobile` for a Flutter app. Use only the rules that match your chosen stack. Review their `paths` frontmatter and adapt it to actual folders during an authorized setup task. If the app has not been scaffolded yet, treat those paths as proposed until the folders exist. Existing conflicting instructions are never overwritten.
 
 Read the installed rule files explicitly during setup: a rule with nonmatching paths may never activate, so an instruction inside it cannot reliably repair its own scope. Confirm representative files match the intended rule and unrelated files do not. The installer neither discovers the stack nor rewrites rule paths automatically.
 
 ## Make the skills available in all your local projects
 
+For personal use rather than a team-shared project installation, run **from the toolkit directory**:
+
 ```bash
+node install.mjs --global --dry-run
 node install.mjs --global
 ```
 
@@ -152,9 +245,7 @@ Personal files on your machine are not automatically available in cloud sessions
 
 Use the relevant skills for the task; this is not a mandatory twelve-step sequence. Tests and documentation remain part of implementation. Product/design quality provide dedicated verification passes when requested or appropriate to the work.
 
-For a new project, a useful initial prompt is:
-
-> Inspect this project, discover its actual stack and commands, and adapt the installed framework-rule paths. Keep existing conventions. Use product-planning to turn my idea into a scoped brief, identifying the few decisions you need from me before implementation.
+For an empty application, begin with the [first-project prompt](#first-project-prompt) rather than asking for a review of code that does not exist yet.
 
 ## Existing files, collisions and updates
 
@@ -165,6 +256,21 @@ If a conflict occurs, compare the source and installed version and merge intenti
 Keep the kit as your source and reinstall into new projects as needed. After changing a skill, review the differences before updating an existing installation. Installed copies are independent, not auto-updating links.
 
 No `allowed-tools` grants, hooks, model overrides, automatic delegation, external dependencies, analytics or account connections are added. A workflow request does not grant permissions that Claude Code or your project does not already have.
+
+## Troubleshooting
+
+| Symptom | What to check |
+|---|---|
+| `node` or `claude` is not found | Install the corresponding prerequisite and open a new terminal. Installing this pack does not install those tools. |
+| Cannot find `install.mjs` | Check your working directory: use `node claude-code-ai-skills/install.mjs ...` from its parent, or `node install.mjs ...` from inside the toolkit. ZIP extraction may use a different folder name. |
+| Target directory does not exist / `ENOENT` | Create the application directory first or correct the path. Keep paths with spaces in quotes. |
+| `Nothing copied. Existing content conflicts` | No files were copied by that attempt. Compare and merge deliberately; omit flags for files you do not want installed. A same-name skill conflict still needs resolution. |
+| `CLAUDE.md` or docs are missing | A default install adds skills only. Root instructions require `--starter`; project docs require `--docs`. Preview any added options first. |
+| A skill command is missing or runs an unexpected copy | Open Claude in the target application, confirm `.claude/skills/<name>/SKILL.md` exists, and start a fresh session. Check same-name personal skills and your environment's customization policy using the [official troubleshooting guidance](https://code.claude.com/docs/en/skills#troubleshooting). |
+| A framework rule does not apply | Inspect its `paths` against real source files. The installer does not detect folders or rewrite patterns. |
+| Tests or visual checks cannot run | Report the missing prerequisite and mark the affected checks BLOCKED or NOT RUN. Installing skills does not supply a browser, device, database or test account. |
+
+For older documentation ZIPs or a customized installation, follow [migration guidance](playbook/migration.md). Do not delete your existing instructions or weaken permissions just to make an install or check succeed.
 
 ## Validate and evaluate
 
@@ -207,7 +313,11 @@ No. The twelve skills inspect the actual project and follow its stack. The four 
 
 ### Can I install just one skill without the installer?
 
-Yes. Copy its entire folder from `skills/` into your project's `.claude/skills/`, including any `references/` directory. Compare existing same-name content first. The supplied installer installs the full catalog and performs conflict checks for you.
+Yes. Follow [single-skill installation](#install-only-one-skill). The supplied installer installs the full catalog and performs conflict checks; manual copying does not.
+
+### Do I need both CLAUDE.md and AGENTS.md?
+
+Not for this Claude-only starter. `--starter` installs `templates/CLAUDE.md` at your application root. The separate [shared-agent template](playbook/templates/AGENTS.template.md) and [Claude adapter](playbook/templates/CLAUDE.template.md) are optional alternatives for a reviewed multi-tool setup, not additional files you must activate. The adapter imports `AGENTS.md` and should not be used without that file. Do not replace the installed working agreement with it blindly.
 
 ### Does this work in ordinary Claude chat?
 
